@@ -3,7 +3,7 @@ package processor
 import java.lang.IllegalArgumentException
 import java.util.*
 
-class Matrix(val n: Int, val m: Int) {
+data class Matrix(val n: Int, val m: Int) {
     private val matrix = Array(n) { Array(m) { 0 } }
 
     companion object {
@@ -16,6 +16,7 @@ class Matrix(val n: Int, val m: Int) {
                     result.matrix[i][j] = scanner.nextInt()
                 }
             }
+            System.err.println(result)
             return result
         }
     }
@@ -36,6 +37,14 @@ class Matrix(val n: Int, val m: Int) {
         for (i in 0 until n) {
             result += matrix[i].joinToString( " ", postfix = System.lineSeparator())
         }
+        return result
+    }
+
+    fun mul(c: Int): Matrix {
+        val result = this.copy()
+        for (i in 0 until n)
+            for (j in 0 until m)
+                result.matrix[i][j] = this.matrix[i][j] * c
         return result
     }
 }
