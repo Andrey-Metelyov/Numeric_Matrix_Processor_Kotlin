@@ -68,4 +68,42 @@ data class Matrix(val n: Int, val m: Int) {
         }
         return result
     }
+
+    fun transposeMain(): Matrix {
+        if (this.n != this.m) {
+            throw IllegalStateException("Dimensions are not suitable ${this.n}x${this.m}")
+        }
+        val result = this.copy()
+        for (i in 0 until n)
+            for (j in 0 until m)
+                result.matrix[i][j] = matrix[j][i]
+        return result
+    }
+
+    fun transposeSide(): Matrix {
+        if (this.n != this.m) {
+            throw IllegalStateException("Dimensions are not suitable ${this.n}x${this.m}")
+        }
+        val result = this.copy()
+        for (i in 0 until n)
+            for (j in 0 until m)
+                result.matrix[n - i - 1][n - j - 1] = matrix[j][i]
+        return result
+    }
+
+    fun transposeVLine(): Matrix {
+        val result = this.copy()
+        for (i in 0 until n)
+            for (j in 0 until m)
+                result.matrix[i][j] = matrix[i][m - j - 1]
+        return result
+    }
+
+    fun transposeHLine(): Matrix {
+        val result = this.copy()
+        for (i in 0 until n)
+            for (j in 0 until m)
+                result.matrix[i][j] = matrix[n - i - 1][j]
+        return result
+    }
 }
