@@ -8,9 +8,20 @@ fun main() {
             "2" -> testMulByNum()
             "3" -> testMulByMatrix()
             "4" -> testTransposeMatrix()
+            "5" -> testDeterminant()
+            "6" -> testInverseMatrix()
             "0" -> break
         }
     }
+}
+
+fun testInverseMatrix() {
+    val a = Matrix.read()
+    println(a.inv())}
+
+fun testDeterminant() {
+    val a = Matrix.read()
+    println(a.det())
 }
 
 fun testTransposeMatrix() {
@@ -41,7 +52,7 @@ fun transposeSideDiagonal() {
 
 fun transposeMainDiagonal() {
     val a = Matrix.read()
-    println(a.transposeMain())
+    println(a.transpose())
 }
 
 fun printTransposeMenu() {
@@ -57,6 +68,8 @@ fun printMenu() {
             "2. Multiply matrix by a constant\n" +
             "3. Multiply matrices\n" +
             "4. Transpose matrix\n" +
+            "5. Calculate a determinant\n" +
+            "6. Inverse matrix\n" +
             "0. Exit\n" +
             "Your choice:")
 }
@@ -65,7 +78,7 @@ fun testMulByMatrix() {
     val a = Matrix.read()
     val b = Matrix.read()
     try {
-        println(a.mul(b))
+        println(a.multiply(b))
     } catch (e: IllegalArgumentException) {
         println("ERROR: ${e.message}")
     }
@@ -73,9 +86,9 @@ fun testMulByMatrix() {
 
 fun testMulByNum() {
     val a = Matrix.read()
-    val c = readLine()!!.toInt()
+    val c = readLine()!!.toDouble()
     System.err.println(c)
-    println(a.mul(c))
+    println(a.multiply(c))
 }
 
 private fun testSum() {

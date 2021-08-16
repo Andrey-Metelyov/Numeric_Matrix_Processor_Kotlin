@@ -1,6 +1,5 @@
 package processor
 
-import java.lang.IllegalArgumentException
 import java.util.*
 
 data class Matrix(val n: Int, val m: Int) {
@@ -42,7 +41,7 @@ data class Matrix(val n: Int, val m: Int) {
         return result
     }
 
-    fun mul(c: Int): Matrix {
+    fun multiply(c: Double): Matrix {
         val result = this.copy()
         for (i in 0 until n)
             for (j in 0 until m)
@@ -50,7 +49,7 @@ data class Matrix(val n: Int, val m: Int) {
         return result
     }
 
-    fun mul(other: Matrix): Matrix {
+    fun multiply(other: Matrix): Matrix {
         if (this.n != other.m && this.m != other.n) {
             throw IllegalArgumentException("Dimensions are not suitable ${this.n}x${this.m} + ${other.n}x${other.m}")
         }
@@ -69,7 +68,7 @@ data class Matrix(val n: Int, val m: Int) {
         return result
     }
 
-    fun transposeMain(): Matrix {
+    fun transpose(): Matrix {
         if (this.n != this.m) {
             throw IllegalStateException("Dimensions are not suitable ${this.n}x${this.m}")
         }
@@ -105,5 +104,52 @@ data class Matrix(val n: Int, val m: Int) {
             for (j in 0 until m)
                 result.matrix[i][j] = matrix[n - i - 1][j]
         return result
+    }
+
+    fun det(): Double {
+        if (n == 1) {
+            return matrix[0][0]
+        }
+        if (n == 2) {
+            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+        }
+        var result = 0.0
+        for (i in 0 until m) {
+            val minor: Matrix = getMinor(0, i)
+            result += (if (i % 2 == 0) 1.0 else -1.0) * matrix[0][i] * minor.det()
+        }
+        return result
+    }
+
+    private fun getMinor(row: Int, column: Int): Matrix {
+        val result = Matrix(n - 1, m - 1)
+        var ii = 0
+        var jj: Int
+        for (i in 0 until n) {
+            if (i == row) {
+                continue
+            }
+            jj = 0
+            for (j in 0 until m) {
+                if (j == column) {
+                    continue
+                }
+                result.matrix[ii][jj++] = matrix[i][j]
+            }
+            ii++
+        }
+        return result
+    }
+
+    fun inv(): Matrix {
+        val cofactors = this.copy()
+        val det = det()
+        for (i in 0 until n) {
+            for (j in 0 until m) {
+                val minor = getMinor(i, j)
+                cofactors.matrix[i][j] = (if ((i + j) % 2 == 0) 1.0 else -1.0) * minor.det()
+            }
+        }
+        return cofactors.transpose().multiply(1.0 / det)
     }
 }
